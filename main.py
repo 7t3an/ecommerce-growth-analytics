@@ -17,6 +17,6 @@ def run_sql(file):
         query = f.read()
     return pd.read_sql(query, engine)
 
-data_quality_df = run_sql("data_quality.sql")
+product_df = run_sql("product_mart.sql")
 
-print(data_quality_df)
+print(product_df.head())
