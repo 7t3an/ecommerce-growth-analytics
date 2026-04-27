@@ -5,11 +5,11 @@ WITH product_base AS (
         category,
         brand,
         price,
-        rating AS catalog_rating
+        rating AS product_rating
     FROM products
 ),
 
--- INTENT
+-- INTENT (events)
 product_events AS (
     SELECT
         product_id,
@@ -20,7 +20,7 @@ product_events AS (
     GROUP BY product_id
 ),
 
--- SALES 
+-- SALES (order_items = truth)
 product_sales AS (
     SELECT
         product_id,
@@ -31,12 +31,12 @@ product_sales AS (
     GROUP BY product_id
 ),
 
--- REVIEWS 
+-- REVIEWS (aggregated)
 product_reviews AS (
     SELECT
         product_id,
         COUNT(*) AS reviews_count,
-        AVG(rating) AS avg_rating
+        AVG(rating) AS review_avg_rating
     FROM reviews
     GROUP BY product_id
 )
@@ -48,21 +48,22 @@ SELECT
     pb.brand,
     pb.price,
 
-    pb.catalog_rating,
+    -- PRODUCT QUALITY (catalog)
+    pb.product_rating,
 
-    -- BEHAVIOR
+    -- BEHAVIOR (demand)
     COALESCE(pe.views_count, 0) AS views_count,
     COALESCE(pe.cart_adds, 0) AS cart_adds,
     COALESCE(pe.wishlist_adds, 0) AS wishlist_adds,
 
-    -- SALES
+    -- SALES (real)
     COALESCE(ps.orders_count, 0) AS orders_count,
     COALESCE(ps.units_sold, 0) AS units_sold,
     COALESCE(ps.revenue, 0) AS revenue,
 
-    -- REVIEWS
+    -- REVIEWS (user feedback)
     COALESCE(pr.reviews_count, 0) AS reviews_count,
-    pr.avg_rating
+    pr.review_avg_rating
 
 FROM product_base pb
 
