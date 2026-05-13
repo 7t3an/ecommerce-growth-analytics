@@ -1,6 +1,6 @@
 # Ecommerce Growth Analytics
 
-End-to-end behavioral and revenue analysis of an ecommerce platform — built as a portfolio project to demonstrate SQL, Python, and data storytelling skills.
+End-to-end behavioral and revenue analysis of an ecommerce platform built as a portfolio project to demonstrate SQL, Python, and data storytelling skills.
 
 ---
 
